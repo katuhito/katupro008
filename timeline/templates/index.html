@@ -18,7 +18,7 @@
             <label for="file">画像アップロード</label>
             <input type="file" class="form-control-file" id="exampleFormControlFile1" name="photo">
           </div>
-          <button class="btn btn-info btn-block" type="submit">ほめる</button>
+          <button class="btn btn-info btn-block" type="submit">投稿する</button>
         </form>
       </div>
     </div>
@@ -38,6 +38,14 @@
       </div>
     </div>
     <p class="card-text mt-2">{{ post.text | linebreaks }}</p>
+    <button class="btn btn-link p-0 {% if user in post.get_like %}disabled post-liked text-secondary{% else %}post-like text-info{% endif %}" id="post-like-{{ post.id }}" data-id="{{ post.id }}">ほめる</button>
+    <span class="badge badge-info" id="like-count-{{ post.id }}">{% if post.get_like %}{{ post.get_like | length }}{% endif %}</span>
+    {% if post.author.id == user.id %}
+    <form method="post" action="{% url 'timeline:delete' post.id %}" class="d-inline">
+      {% csrf_token %}
+      <button class="btn btn-link text-info p-0 ml-3" type="submit" onclick='return confirm("この投稿を本当に削除しますか？");'>削除</button>
+    </form>
+    {% endif %}
   </div>
   {% if post.post_photo %}
   <img class="card-img-bottom" src="{{ post.post_photo.url }}" alt="Card image cap">
@@ -74,4 +82,5 @@
   {% endif %}
   </ul>
 </nav>
+
 {% endblock %}

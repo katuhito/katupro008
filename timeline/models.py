@@ -1,7 +1,11 @@
+from pyexpat import model
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import models
 from django.db.models.fields.files import ImageField
 from imagekit.models import ImageSpecField, ProcessedImageField
 from imagekit.processors import ResizeToFill, ResizeToFit
+
+
 
 class Post(models.Model):
     author = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE)
@@ -20,4 +24,7 @@ class Like(models.Model):
 
     class Meta:
         unique_together = ('user', 'post')
+
+
+
 
